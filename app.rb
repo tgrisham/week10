@@ -78,7 +78,14 @@ end
 
 post "/rsvps/:id/update" do
     puts "params: #{params}"
-
+    # first find the event that rsvp'ing for
+    @rsvp = rsvps_table.where(id: params["id"]).to_a[0]
+    @event = events_table.where(id: @rsvp[:event_id]).to_a[0]
+    # next we want to insert a row in the rsvps table with the rsvp form data
+    rsvps_table.where(id: params["id"]).update(
+       going: params["going"],
+       comments: params["comments"]
+    )
     view "update_rsvp"
 end
 
@@ -101,7 +108,11 @@ end
 # receive the submitted signup form (aka "create")
 post "/users/create" do
     puts "params: #{params}"
-
+    #if there's already a user
+    existing_user = users_table.where(email: params["email"]).to_a[0]
+    if existing_user
+        view "error"
+    end
     users_table.insert(
         name: params["name"],
         email: params["email"],

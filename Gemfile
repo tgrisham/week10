@@ -3,6 +3,15 @@ source 'https://rubygems.org'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'sequel'
+
+group :development do
+    gem 'sqlite3'
+end
+
+group :product do
+    gem 'pg'
+end
+
 gem 'sqlite3'
 gem 'twilio-ruby'
 gem 'bcrypt'
